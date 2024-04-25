@@ -1,0 +1,35 @@
+version: '0.1'
+services:
+  dhcp_wh_service:
+    image: dhcp_wh:demo
+    container_name: dhcp_wh
+    ports:
+      - "443:5005"
+    networks:
+    - netbox-docker_default
+    volumes:
+      - tftp-data:/tftpboot
+    env_file:
+      - dhcp_wh_service.env
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "udp://0.0.0.0:514"
+        tag: "{{.Name}}"
+  tftp-server:
+    image: tftp_service:latest
+    container_name: tftp
+    entrypoint: in.tftpd
+    command: -L -4 --secure --address 0.0.0.0:69 --verbosity 3 /tftpboot
+    ports:
+      - "0.0.0.0:69:69/udp"
+    volumes:
+      - tftp-data:/tftpboot
+    restart: unless-stopped
+
+volumes:
+  tftp-data:
+
+networks:
+  netbox-docker_default:
+    external: true

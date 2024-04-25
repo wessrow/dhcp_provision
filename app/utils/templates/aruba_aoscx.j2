@@ -1,0 +1,55 @@
+hostname {{ hostname }}
+!
+!
+!
+aaa authentication login ssh group CYGATE-ADM local
+vlan 1
+    client track ip 
+vlan 15
+    name BRANCH-CORP
+    client track ip 
+    dhcpv4-snooping
+vlan 30
+    name BRANCH-GUEST
+    client track ip 
+    dhcpv4-snooping
+vlan 50
+    name BRANCH-PRINT                                          
+    client track ip 
+    dhcpv4-snooping
+spanning-tree
+interface 1/1/1
+    description UPLINK
+    no shutdown 
+    vlan trunk native 1
+    vlan trunk allowed all
+    dhcpv4-snooping trust
+    client track ip disable
+{% for item in interfaces[1:] -%}
+{% if item.interface != 'vlan1' and item.if_type == '1GbT' -%}
+interface {{ item.interface }}
+    description ACCESS
+    shutdown
+    vlan access {{ fallback_vlan }}
+{% elif item.interface != 'vlan1' and item.if_type != '1GbT' -%}
+interface {{ item.interface }}
+    description UPLINK
+    no shutdown 
+    vlan trunk native 1
+    vlan trunk allowed all
+    dhcpv4-snooping trust
+    client track ip disable
+{% endif -%}
+{% endfor -%}
+interface vlan 1
+    ip address {{ ip_address }}
+ip route 0.0.0.0/0 {{ default_gw }}
+ip dns server-address 1.1.1.1
+ip dns server-address 8.8.8.8
+!
+!
+!
+!
+no https-server vrf default
+interface {{ interfaces[1].interface }}-{{ interfaces[-2].interface }}
+    no shutdown
