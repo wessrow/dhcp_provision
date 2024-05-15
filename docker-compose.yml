@@ -1,7 +1,7 @@
 version: '0.1'
 services:
   dhcp_wh_service:
-    image: dhcp_wh:demo
+    image: ghcr.io/wessrow/dhcp_provision:latest
     container_name: dhcp_wh
     ports:
       - "443:5005"
@@ -11,13 +11,8 @@ services:
       - tftp-data:/tftpboot
     env_file:
       - dhcp_wh_service.env
-    logging:
-      driver: syslog
-      options:
-        syslog-address: "udp://0.0.0.0:514"
-        tag: "{{.Name}}"
   tftp-server:
-    image: tftp_service:latest
+    image: ghcr.io/wessrow/tftp:latest
     container_name: tftp
     entrypoint: in.tftpd
     command: -L -4 --secure --address 0.0.0.0:69 --verbosity 3 /tftpboot

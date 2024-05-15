@@ -39,9 +39,9 @@ logging.getLogger('scrapli').propagate = False
 try:
     TFTP_SERVER = os.environ["TFTP_SERVER"]
     NB_API_TOKEN = os.environ["NB_API_TOKEN"]
-    SFTP_SERVER = os.environ["SFTP_SERVER"]
-    SFTP_USER = os.environ["SFTP_USER"]
-    SFTP_PASSWORD = os.environ["SFTP_PASSWORD"]
+    # SFTP_SERVER = os.environ["SFTP_SERVER"]
+    # SFTP_USER = os.environ["SFTP_USER"]
+    # SFTP_PASSWORD = os.environ["SFTP_PASSWORD"]
     # FGT_USER = os.environ["FGT_USER"]
     # FGT_PASS = os.environ["FGT_PASS"]
 except KeyError as error:
