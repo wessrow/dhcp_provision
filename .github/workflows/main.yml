@@ -26,10 +26,10 @@ jobs:
 
       - name: Build and tag Docker image
         run: |
-          docker build -t ghcr.io/${{ github.repository }}:${{ env.TAG }} .
-          docker tag ghcr.io/${{ github.repository }}:${{ env.TAG }} ghcr.io/${{ github.repository }}:latest
+          docker build -t ghcr.io/wessrow/dhcp_provision:${{ env.TAG }} .
+          docker tag ghcr.io/wessrow/dhcp_provision:${{ env.TAG }} ghcr.io/wessrow/dhcp_provision:latest
 
       - name: Push Docker image to GHCR
         run: |
-          docker push ghcr.io/${{ github.repository }}:${{ env.TAG }}
-          docker push ghcr.io/${{ github.repository }}:latest
+          docker push ghcr.io/wessrow/dhcp_provision:${{ env.TAG }}
+          docker push ghcr.io/wessrow/dhcp_provision:latest
